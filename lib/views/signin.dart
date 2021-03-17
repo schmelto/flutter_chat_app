@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class SignIn extends StatefulWidget {
+  final Function toggleView;
+  SignIn(this.toggleView);
+
   @override
   _SignInState createState() => _SignInState();
 }

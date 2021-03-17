@@ -5,6 +5,8 @@ import 'package:flutter_chat_app/widgets/widgets.dart';
 
 
 class SignUp extends StatefulWidget {
+  final Function toggleView;
+  SignUp(this.toggleView);
   @override
   _SignUpState createState() => _SignUpState();
 }
