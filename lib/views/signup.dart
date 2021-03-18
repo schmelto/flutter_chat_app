@@ -3,10 +3,10 @@ import 'package:flutter_chat_app/services/auth.dart';
 import 'package:flutter_chat_app/views/chatRoomScreen.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
-
 class SignUp extends StatefulWidget {
   final Function toggleView;
   SignUp(this.toggleView);
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -24,7 +24,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordTextEditingController =
       new TextEditingController();
 
-  signUp() {
+  signUp() async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
@@ -34,11 +34,8 @@ class _SignUpState extends State<SignUp> {
           .signUpWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((value) {
-        print("${value.uid}");
-
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ChatRoom()
-          ));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ChatRoom()));
       });
     }
   }
@@ -159,14 +156,25 @@ class _SignUpState extends State<SignUp> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Already have an account? ",
-                              style: simpleTextStyle()),
-                          Text("Sign In now",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                decoration: TextDecoration.underline,
-                              )),
+                          Text(
+                            "Already have an account? ",
+                            style: simpleTextStyle(),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              widget.toggleView();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                "SignIn now",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(

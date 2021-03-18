@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/services/auth.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class SignIn extends StatefulWidget {
@@ -10,6 +11,33 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController emailEditingController = new TextEditingController();
+  TextEditingController passwordEditingController = new TextEditingController();
+
+  AuthMethods authMethods = new AuthMethods();
+
+  final formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
+  signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await authMethods
+        .signInWithEmailAndPassword(
+            emailEditingController.text, passwordEditingController.text)
+        .then((value) async {
+      if (value != null) {
+        //TODO
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +57,7 @@ class _SignInState extends State<SignIn> {
                     decoration: textFieldInputDecoraion("email")),
                 TextField(
                     style: simpleTextStyle(),
+                    obscureText: true,
                     decoration: textFieldInputDecoraion("password")),
                 SizedBox(
                   height: 8,
@@ -87,13 +116,24 @@ class _SignInState extends State<SignIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account? ", style: simpleTextStyle()),
-                    Text("Register now",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          decoration: TextDecoration.underline,
-                        )),
+                    Text(
+                      "Don't have an account? ",
+                      style: simpleTextStyle(),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        widget.toggleView();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text("Register now",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              decoration: TextDecoration.underline,
+                            )),
+                      ),
+                    )
                   ],
                 ),
                 SizedBox(
