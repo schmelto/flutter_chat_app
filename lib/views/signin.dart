@@ -28,46 +28,42 @@ class _SignInState extends State<SignIn> {
   signIn() async {
     if (formKey.currentState.validate()) {
 
-      // TODO: function to get userDetails
-
       setState(() {
         isLoading = true;
       });
 
-      HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
-      
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailEditingController.text);
+
       await authMethods
-        .signInWithEmailAndPassword(
-            emailEditingController.text, passwordEditingController.text)
-        .then((value) async {
-      if (value != null) {
+          .signInWithEmailAndPassword(
+              emailEditingController.text, passwordEditingController.text)
+          .then((value) async {
+        if (value != null) {
+          Stream userStream =
+              await databaseMethods.getUserByEmail(emailEditingController.text);
 
-          QuerySnapshot userStream =  await databaseMethods.getUserByEmail(emailEditingController.text);
-          print(userStream);
-          // QuerySnapshot userInfoSnapshot =
-          //     await DatabaseMethods().getUserInfo(emailEditingController.text);
-
-          // HelperFunctions.saveUserLoggedInSharedPreference(true);
-          // HelperFunctions.saveUserNameSharedPreference(
-          //     userInfoSnapshot.documents[0].data["userName"]);
-          // HelperFunctions.saveUserEmailSharedPreference(
-          //     userInfoSnapshot.documents[0].data["userEmail"]);
-
+          // TODO: refactor method -> not with for each -> only one result is necessary
+          userStream.forEach((field) {
+            QuerySnapshot snapshot = field;
+            DocumentSnapshot ds = snapshot.docs[0];
+            HelperFunctions.saveUserLoggedInSharedPreference(true);
+            HelperFunctions.saveUserNameSharedPreference(ds["name"]);
+            HelperFunctions.saveUserEmailSharedPreference(ds["email"]);
+          });
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => ChatRoom()));
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+        }
+      });
     }
-
-    
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
@@ -77,6 +73,7 @@ class _SignInState extends State<SignIn> {
             )
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
+              height: MediaQuery.of(context).size.height - 100,
               child: Column(
                 children: [
                   Spacer(),
@@ -170,9 +167,10 @@ class _SignInState extends State<SignIn> {
                     width: MediaQuery.of(context).size.width,
                     child: Text(
                       "Sign In with Google",
-                      style:
-                          TextStyle(color: Colors.black87,
-                        fontSize: 17,),
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 17,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -267,7 +265,7 @@ class _SignInState extends State<SignIn> {
   //                   ),
   //                   child: Text("Sign In", style: mediumTextStyle())),
   //               ),
-                
+
   //               SizedBox(
   //                 height: 8,
   //               ),

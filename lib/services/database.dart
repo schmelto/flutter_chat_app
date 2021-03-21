@@ -9,7 +9,7 @@ class DatabaseMethods {
         .snapshots();
   }
 
-    Future getUserByEmail(String email) async {
+    Future<Stream<QuerySnapshot>> getUserByEmail(String email) async {
     return FirebaseFirestore.instance
         .collection("users")
         .where("email", isEqualTo: email)
