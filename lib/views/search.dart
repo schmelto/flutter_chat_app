@@ -92,6 +92,8 @@ Widget searchUsersList() {
   }
 
     sendMessage(String userName){
+
+      
     // List<String> users = [Constants.myName,userName];
 
     // String chatRoomId = getChatRoomId(Constants.myName,userName);
@@ -101,7 +103,7 @@ Widget searchUsersList() {
     //   "chatRoomId" : chatRoomId,
     // };
 
-    // databaseMethods.addChatRoom(chatRoom, chatRoomId);
+    // databaseMethods.createChatRoom(chatRoomId, chatRoomInfoMap);
 
     // Navigator.push(context, MaterialPageRoute(
     //   builder: (context) => Chat(

@@ -9,15 +9,29 @@ class DatabaseMethods {
         .snapshots();
   }
 
+    Future getUserByEmail(String email) async {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .snapshots();
+  }
+
 
   uploadUserInfo(userMap){
     FirebaseFirestore.instance.collection("users").add(userMap);
   }
 
-  // createChatRoom(String chatRoomId, Map chatRoomMap){
-  //   return FirebaseFirestore.instance.collection("chatRoom").doc(chatRoomId).set(chatRoomMap).catchError(e){
-  //     print(e.toString);
-  //   }
-  // }
+  createChatRoom(String chatRoomId, Map chatRoomInfoMap) async {
+
+    final snapshot = await FirebaseFirestore.instance.collection("chatRoom").doc(chatRoomId).get();
+
+    if (snapshot.exists) {
+      // chatroom allready exists
+      return true;
+    } else {
+      // chatroom does not exists
+      return FirebaseFirestore.instance.collection("chatRoom").doc(chatRoomId).set(chatRoomInfoMap);
+    }
+  }
 
 }

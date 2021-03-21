@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/helper/helperfunctions.dart';
 import 'package:flutter_chat_app/services/auth.dart';
 import 'package:flutter_chat_app/services/database.dart';
 import 'package:flutter_chat_app/views/chatRoomScreen.dart';
@@ -14,10 +15,11 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isLoading = false;
+  final formKey = GlobalKey<FormState>();
 
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
-  final formKey = GlobalKey<FormState>();
+
   TextEditingController userNameTextEditingController =
       new TextEditingController();
   TextEditingController emailTextEditingController =
@@ -27,22 +29,31 @@ class _SignUpState extends State<SignUp> {
 
   signUp() async {
     if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
       Map<String, String> userMap = {
         "name": userNameTextEditingController.text,
         "email": emailTextEditingController.text
       };
 
-      setState(() {
-        isLoading = true;
-      });
-
-      authMethods
+      await authMethods
           .signUpWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((value) {
-        databaseMethods.uploadUserInfo(userMap);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        if (value != null) {
+          databaseMethods.uploadUserInfo(userMap);
+
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          HelperFunctions.saveUserNameSharedPreference(
+              userNameTextEditingController.text);
+          HelperFunctions.saveUserEmailSharedPreference(
+              emailTextEditingController.text);
+
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
       });
     }
   }
@@ -75,7 +86,7 @@ class _SignUpState extends State<SignUp> {
                                 controller: userNameTextEditingController,
                                 style: simpleTextStyle(),
                                 decoration:
-                                    textFieldInputDecoraion("username")),
+                                    textFieldInputDecoration("username")),
                             TextFormField(
                                 validator: (val) {
                                   return RegExp(
@@ -86,7 +97,7 @@ class _SignUpState extends State<SignUp> {
                                 },
                                 controller: emailTextEditingController,
                                 style: simpleTextStyle(),
-                                decoration: textFieldInputDecoraion("email")),
+                                decoration: textFieldInputDecoration("email")),
                             TextFormField(
                                 validator: (val) {
                                   return val.length < 6
@@ -97,7 +108,7 @@ class _SignUpState extends State<SignUp> {
                                 controller: passwordTextEditingController,
                                 style: simpleTextStyle(),
                                 decoration:
-                                    textFieldInputDecoraion("password")),
+                                    textFieldInputDecoration("password")),
                           ],
                         ),
                       ),
