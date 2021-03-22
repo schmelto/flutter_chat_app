@@ -113,23 +113,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                          child: Text(
-                            "Forgot Password?",
-                            style: simpleTextStyle(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
+                        height: 16,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -151,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                             child: Text("Sign Up", style: mediumTextStyle())),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 16,
                       ),
                       Container(
                           alignment: Alignment.center,
@@ -169,7 +153,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           )),
                       SizedBox(
-                        height: 8,
+                        height: 16,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/services/auth.dart';
 import 'package:flutter_chat_app/services/database.dart';
 import 'package:flutter_chat_app/views/chatRoomScreen.dart';
+import 'package:flutter_chat_app/views/forgotpassword.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 import 'package:flutter_chat_app/helper/helperfunctions.dart';
 
@@ -116,10 +117,10 @@ class _SignInState extends State<SignIn> {
                         GestureDetector(
                           onTap: () {
                             // TODO: forget password
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => ForgotPassword()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForgotPassword()));
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(

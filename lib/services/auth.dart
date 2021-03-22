@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_app/model/chatuser.dart';
 
-class AuthMethods{
-
+class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   ChatUser _userFromFirebaseUser(User user) {
@@ -16,7 +15,8 @@ class AuthMethods{
 
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -26,11 +26,12 @@ class AuthMethods{
   }
 
   Future signUpWithEmailAndPassword(String email, String password) async {
-    try{
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User user = result.user;
       return _userFromFirebaseUser(user);
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -39,7 +40,17 @@ class AuthMethods{
   Future resetPassword(String email) async {
     try {
       return await _auth.sendPasswordResetEmail(email: email);
-    }catch(e){
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future changePassword(String email, String password) async {
+    try {
+      // TODO: create changepassword method
+      return await null;
+    } catch (e) {
       print(e.toString());
       return null;
     }
@@ -53,10 +64,9 @@ class AuthMethods{
   Future signOut() async {
     try {
       return await _auth.signOut();
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       return null;
     }
   }
-
 }
