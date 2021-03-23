@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_chat_app/helper/helperfunctions.dart';
 import 'package:flutter_chat_app/model/chatuser.dart';
 
 class AuthMethods {
@@ -63,6 +64,7 @@ class AuthMethods {
 
   Future signOut() async {
     try {
+      await HelperFunctions.resetUerSharedPreferences();
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/constants.dart';
-import 'package:flutter_chat_app/services/database.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class Chat extends StatefulWidget {
