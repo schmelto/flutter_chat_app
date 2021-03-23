@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/helper/constants.dart';
 import 'package:flutter_chat_app/services/database.dart';
+import 'package:flutter_chat_app/views/chatRoomScreen.dart';
+import 'package:flutter_chat_app/views/conversationScreen.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -23,14 +26,15 @@ class _SearchScreenState extends State<SearchScreen> {
         isLoading = true;
       });
     }
-    usersStream = await databaseMethods.getUserByUserName(searchEditingController.text);
+    usersStream =
+        await databaseMethods.getUserByUserName(searchEditingController.text);
     setState(() {
       isLoading = false;
       haveUserSearched = true;
     });
   }
 
-Widget searchUsersList() {
+  Widget searchUsersList() {
     return StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
@@ -40,10 +44,7 @@ Widget searchUsersList() {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
-                  return userTile(
-                      name: ds["name"],
-                      email: ds["email"]
-                    );
+                  return userTile(name: ds["name"], email: ds["email"]);
                 },
               )
             : Container(
@@ -74,7 +75,7 @@ Widget searchUsersList() {
           Spacer(),
           GestureDetector(
             onTap: () {
-              //TODO: sendMessage(userName);
+              sendMessage(name);
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -91,26 +92,38 @@ Widget searchUsersList() {
     );
   }
 
-    sendMessage(String userName){
+  sendMessage(String userName) {
+    List<String> users = [Constants.myName, userName];
 
-      
-    // List<String> users = [Constants.myName,userName];
+    String chatRoomId = getChatRoomId(Constants.myName, userName);
 
-    // String chatRoomId = getChatRoomId(Constants.myName,userName);
+    Map<String, dynamic> chatRoom = {
+      // like the Firebase Document
+      "users": users,
+      "chatroomID": chatRoomId,
+    };
 
-    // Map<String, dynamic> chatRoom = {
-    //   "users": users,
-    //   "chatRoomId" : chatRoomId,
-    // };
+    databaseMethods.createChatRoom(chatRoomId, chatRoom);
 
-    // databaseMethods.createChatRoom(chatRoomId, chatRoomInfoMap);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Chat(
+                  chatRoomId: chatRoomId,
+                )));
+  }
 
-    // Navigator.push(context, MaterialPageRoute(
-    //   builder: (context) => Chat(
-    //     chatRoomId: chatRoomId,
-    //   )
-    // ));
+  getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
 
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -144,9 +157,7 @@ Widget searchUsersList() {
                                     fontSize: 16,
                                   ),
                                   suffixIcon: IconButton(
-                                      onPressed: () => {
-                                            initiateSearch()
-                                          },
+                                      onPressed: () => {initiateSearch()},
                                       icon: Icon(Icons.search,
                                           color: Colors.white))),
                             ),
