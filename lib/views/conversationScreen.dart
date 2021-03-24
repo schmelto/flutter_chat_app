@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/constants.dart';
+import 'package:flutter_chat_app/services/database.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class Chat extends StatefulWidget {
@@ -22,11 +23,11 @@ class _ChatState extends State<Chat> {
       stream: chats,
       builder: (context, snapshot){
         return snapshot.hasData ?  ListView.builder(
-          itemCount: snapshot.data.documents.length,
+          itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index){
               return MessageTile(
-                message: snapshot.data.documents[index].data["message"],
-                sendByMe: Constants.myName == snapshot.data.documents[index].data["sendBy"],
+                message: snapshot.data.doc[index].data["message"],
+                sendByMe: Constants.myName == snapshot.data.doc[index].data["sendBy"],
               );
             }) : Container();
       },
@@ -43,7 +44,7 @@ class _ChatState extends State<Chat> {
             .millisecondsSinceEpoch,
       };
 
-      // DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+      DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
 
       setState(() {
         messageEditingController.text = "";
@@ -53,11 +54,11 @@ class _ChatState extends State<Chat> {
 
   @override
   void initState() {
-    // DatabaseMethods().getChats(widget.chatRoomId).then((val) {
-    //   setState(() {
-    //     chats = val;
-    //   });
-    // });
+    DatabaseMethods().getChats(widget.chatRoomId).then((val) {
+      setState(() {
+        chats = val;
+      });
+    });
     super.initState();
   }
 

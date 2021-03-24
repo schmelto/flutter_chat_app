@@ -64,7 +64,7 @@ class AuthMethods {
 
   Future signOut() async {
     try {
-      await HelperFunctions.resetUerSharedPreferences();
+      // await HelperFunctions.resetUerSharedPreferences();
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

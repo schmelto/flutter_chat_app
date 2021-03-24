@@ -43,12 +43,14 @@ class _SignInState extends State<SignIn> {
           Stream userStream =
               await databaseMethods.getUserByEmail(emailEditingController.text);
 
+
           // TODO: refactor method -> not with for each -> only one result is necessary
           userStream.forEach((field) {
             QuerySnapshot snapshot = field;
             DocumentSnapshot ds = snapshot.docs[0];
             HelperFunctions.saveUserLoggedInSharedPreference(true);
             HelperFunctions.saveUserNameSharedPreference(ds["name"]);
+            print(ds["name"]);
             HelperFunctions.saveUserEmailSharedPreference(ds["email"]);
           });
 
