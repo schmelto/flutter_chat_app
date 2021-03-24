@@ -21,7 +21,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    print(Constants.myName);
+    print("chatRoom: ${Constants.myName}");
   }
 
 

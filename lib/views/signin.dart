@@ -45,14 +45,23 @@ class _SignInState extends State<SignIn> {
 
 
           // TODO: refactor method -> not with for each -> only one result is necessary
-          userStream.forEach((field) {
-            QuerySnapshot snapshot = field;
-            DocumentSnapshot ds = snapshot.docs[0];
-            HelperFunctions.saveUserLoggedInSharedPreference(true);
-            HelperFunctions.saveUserNameSharedPreference(ds["name"]);
-            print(ds["name"]);
-            HelperFunctions.saveUserEmailSharedPreference(ds["email"]);
-          });
+          // userStream.forEach((field) {
+          //   QuerySnapshot snapshot = field;
+          //   DocumentSnapshot ds = snapshot.docs[0];
+          //   HelperFunctions.saveUserLoggedInSharedPreference(true);
+          //   HelperFunctions.saveUserNameSharedPreference(ds["name"]);
+          //   print(ds["name"]);
+          //   HelperFunctions.saveUserEmailSharedPreference(ds["email"]);
+          // });
+
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+
+          QuerySnapshot userInfoSnapshot = await databaseMethods.getUserInfo(emailEditingController.text);
+          DocumentSnapshot ds = userInfoSnapshot.docs[0];
+          print(ds["name"]);
+          HelperFunctions.saveUserNameSharedPreference(ds["name"]);
+              print("SignIn Helper: ${HelperFunctions.getUserNameSharedPreference()}");
+
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => ChatRoom()));

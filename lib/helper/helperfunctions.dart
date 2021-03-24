@@ -1,12 +1,12 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperFunctions {
-  // static String sharedPreferenceUserLoggedInKey = "ISLOGGEDIN";
-  // static String sharedPreferenceUserNameKey = "USERNAMEKEY";
-  // static String sharedPreferenceUserEmailKey = "USEREMAILKEY";
-  static String sharedPreferenceUserLoggedInKey;
-  static String sharedPreferenceUserNameKey;
-  static String sharedPreferenceUserEmailKey;
+  static String sharedPreferenceUserLoggedInKey = "ISLOGGEDIN";
+  static String sharedPreferenceUserNameKey = "USERNAMEKEY";
+  static String sharedPreferenceUserEmailKey = "USEREMAILKEY";
+  // static String sharedPreferenceUserLoggedInKey;
+  // static String sharedPreferenceUserNameKey;
+  // static String sharedPreferenceUserEmailKey;
 
   /// saving data to sharedpreference
   static Future<bool> saveUserLoggedInSharedPreference(

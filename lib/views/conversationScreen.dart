@@ -25,9 +25,10 @@ class _ChatState extends State<Chat> {
         return snapshot.hasData ?  ListView.builder(
           itemCount: snapshot.data.docs.length,
             itemBuilder: (context, index){
+              DocumentSnapshot ds = snapshot.data.docs[index];
               return MessageTile(
-                message: snapshot.data.doc[index].data["message"],
-                sendByMe: Constants.myName == snapshot.data.doc[index].data["sendBy"],
+                message: ds["message"],
+                sendByMe: Constants.myName == ds["sendBy"],
               );
             }) : Container();
       },
@@ -159,7 +160,7 @@ class MessageTile extends StatelessWidget {
             style: TextStyle(
             color: Colors.white,
             fontSize: 16,
-            fontFamily: 'OverpassRegular',
+            // fontFamily: 'OverpassRegular',
             fontWeight: FontWeight.w300)),
       ),
     );

@@ -15,6 +15,16 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  getUserInfo(String email) async {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get()
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
   uploadUserInfo(userMap) {
     FirebaseFirestore.instance.collection("users").add(userMap);
   }
@@ -41,7 +51,7 @@ class DatabaseMethods {
     return FirebaseFirestore.instance
         .collection("chatRoom")
         .doc(chatRoomId)
-        .collection("chats")
+        .collection("chat")
         .orderBy('time')
         .snapshots();
   }
