@@ -23,7 +23,7 @@ class _ChatRoomState extends State<ChatRoom> {
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
-                // shrinkWrap: true,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   return ChatRoomsTile(
