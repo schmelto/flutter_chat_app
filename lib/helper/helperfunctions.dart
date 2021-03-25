@@ -42,9 +42,8 @@ class HelperFunctions {
     return preferences.getString(sharedPreferenceUserEmailKey);
   }
 
-  // static Future resetUerSharedPreferences() async {
-  //   sharedPreferenceUserLoggedInKey = null;
-  //   sharedPreferenceUserNameKey = null;
-  //   sharedPreferenceUserEmailKey = null;
-  // }
+  static Future resetUerSharedPreferences() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
 }
