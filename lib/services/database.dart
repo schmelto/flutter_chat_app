@@ -63,4 +63,11 @@ class DatabaseMethods {
         .collection("chat")
         .add(messageMap);
   }
+
+    getUserChats(String itIsMyName) async {
+    return await FirebaseFirestore.instance
+        .collection("chatRoom")
+        .where('users', arrayContains: itIsMyName)
+        .snapshots();
+  }
 }
