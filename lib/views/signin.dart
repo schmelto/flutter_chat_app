@@ -40,11 +40,8 @@ class _SignInState extends State<SignIn> {
               emailEditingController.text, passwordEditingController.text)
           .then((value) async {
         if (value != null) {
-          Stream userStream =
-              await databaseMethods.getUserByEmail(emailEditingController.text);
-
-
-          // TODO: refactor method -> not with for each -> only one result is necessary
+          // Stream userStream =
+          //     await databaseMethods.getUserByEmail(emailEditingController.text);
           // userStream.forEach((field) {
           //   QuerySnapshot snapshot = field;
           //   DocumentSnapshot ds = snapshot.docs[0];
@@ -127,7 +124,6 @@ class _SignInState extends State<SignIn> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // TODO: forget password
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

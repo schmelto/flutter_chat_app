@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/constants.dart';
@@ -17,12 +19,16 @@ class _ChatState extends State<Chat> {
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
 
+  ScrollController _controller = ScrollController();
+
   Widget chatMessages() {
     return StreamBuilder(
       stream: chats,
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+                // reverse: true,
+                controller: _controller,
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
@@ -44,6 +50,9 @@ class _ChatState extends State<Chat> {
         'time': DateTime.now().millisecondsSinceEpoch,
       };
 
+      Timer(Duration(milliseconds: 500),
+          () => _controller.jumpTo(_controller.position.maxScrollExtent));
+
       DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
 
       setState(() {
@@ -57,6 +66,9 @@ class _ChatState extends State<Chat> {
     DatabaseMethods().getChats(widget.chatRoomId).then((val) {
       setState(() {
         chats = val;
+        Timer(Duration(milliseconds: 500),
+          () => _controller.jumpTo(_controller.position.maxScrollExtent));
+
       });
     });
     super.initState();
@@ -75,26 +87,33 @@ class _ChatState extends State<Chat> {
               width: MediaQuery.of(context).size.width,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                // color: Color(0x54FFFFFF),
+                color: Color(0x54FFFFFF),
                 child: Row(
                   children: [
                     Expanded(
-                        child: TextField(
-                      textInputAction: TextInputAction.go,
-                      onSubmitted: (value) => {addMessage()},
-                      controller: messageEditingController,
-                      style: simpleTextStyle(),
-                      decoration: InputDecoration(
-                          hintText: "Message ...",
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          // border: InputBorder.none
-                          suffixIcon: IconButton(
-                              onPressed: () => {addMessage()},
-                              icon: Icon(Icons.send, color: Colors.white))),
-                    )),
+                      child: TextField(
+                        textInputAction: TextInputAction.go,
+                        onSubmitted: (value) => {addMessage()},
+                        controller: messageEditingController,
+                        style: simpleTextStyle(),
+                        decoration: InputDecoration(
+                            hintText: "Message ...",
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            // border: InputBorder.none
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  addMessage();
+                                  Timer(
+                                      Duration(milliseconds: 300),
+                                      () => _controller.jumpTo(_controller
+                                          .position.maxScrollExtent));
+                                },
+                                icon: Icon(Icons.send, color: Colors.white))),
+                      ),
+                    ),
                   ],
                 ),
               ),

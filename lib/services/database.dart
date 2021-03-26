@@ -65,6 +65,7 @@ class DatabaseMethods {
   }
 
     getUserChats(String itIsMyName) async {
+    // ignore: await_only_futures
     return await FirebaseFirestore.instance
         .collection("chatRoom")
         .where('users', arrayContains: itIsMyName)
