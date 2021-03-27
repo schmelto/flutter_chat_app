@@ -7,9 +7,7 @@ import 'package:flutter_chat_app/widgets/widgets.dart';
 
 class Chat extends StatefulWidget {
   final String chatRoomId;
-
   Chat({this.chatRoomId});
-
   @override
   _ChatState createState() => _ChatState();
 }
@@ -17,7 +15,6 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
-
   ScrollController _controller = ScrollController();
 
   Widget chatMessages() {
@@ -48,7 +45,7 @@ class _ChatState extends State<Chat> {
         'time': DateTime.now().millisecondsSinceEpoch,
       };
       DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
-      
+
       Timer(Duration(milliseconds: 500),
           () => _controller.jumpTo(_controller.position.maxScrollExtent));
 
@@ -64,8 +61,7 @@ class _ChatState extends State<Chat> {
       setState(() {
         chats = val;
         Timer(Duration(milliseconds: 500),
-          () => _controller.jumpTo(_controller.position.maxScrollExtent));
-
+            () => _controller.jumpTo(_controller.position.maxScrollExtent));
       });
     });
     super.initState();
