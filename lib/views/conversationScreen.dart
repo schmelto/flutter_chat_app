@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/constants.dart';
@@ -27,7 +26,6 @@ class _ChatState extends State<Chat> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                // reverse: true,
                 controller: _controller,
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
@@ -49,11 +47,10 @@ class _ChatState extends State<Chat> {
         "message": messageEditingController.text,
         'time': DateTime.now().millisecondsSinceEpoch,
       };
-
+      DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+      
       Timer(Duration(milliseconds: 500),
           () => _controller.jumpTo(_controller.position.maxScrollExtent));
-
-      DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
 
       setState(() {
         messageEditingController.text = "";
@@ -102,7 +99,6 @@ class _ChatState extends State<Chat> {
                               color: Colors.white,
                               fontSize: 16,
                             ),
-                            // border: InputBorder.none
                             suffixIcon: IconButton(
                                 onPressed: () {
                                   addMessage();
@@ -161,7 +157,6 @@ class MessageTile extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
-                // fontFamily: 'OverpassRegular',
                 fontWeight: FontWeight.w300)),
       ),
     );
