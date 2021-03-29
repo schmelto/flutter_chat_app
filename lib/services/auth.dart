@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/helperfunctions.dart';
 import 'package:flutter_chat_app/model/chatuser.dart';
+import 'package:flutter_chat_app/views/chatRoomScreen.dart';
 import 'package:flutter_chat_app/views/conversationScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  HelperFunctions helperfunctions = HelperFunctions();
 
   ChatUser _userFromFirebaseUser(User user) {
     if (user != null) {
@@ -54,11 +56,16 @@ class AuthMethods {
         accessToken: googleSignInAuthentication.accessToken);
 
     UserCredential result = await _auth.signInWithCredential(credential);
-    User userDetails = result.user;
+    User user = result.user;
 
-    if (result == null) {
+    if (user == null) {
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Chat()));
+      print(user.displayName);
+      HelperFunctions.saveUserEmailSharedPreference(user.email);
+      HelperFunctions.saveUserNameSharedPreference(user.displayName);
+      HelperFunctions.saveUserLoggedInSharedPreference(true);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => ChatRoom()));
     }
   }
 

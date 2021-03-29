@@ -6,6 +6,7 @@ import 'package:flutter_chat_app/views/chatRoomScreen.dart';
 import 'package:flutter_chat_app/views/forgotpassword.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 import 'package:flutter_chat_app/helper/helperfunctions.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -40,25 +41,16 @@ class _SignInState extends State<SignIn> {
               emailEditingController.text, passwordEditingController.text)
           .then((value) async {
         if (value != null) {
-          // Stream userStream =
-          //     await databaseMethods.getUserByEmail(emailEditingController.text);
-          // userStream.forEach((field) {
-          //   QuerySnapshot snapshot = field;
-          //   DocumentSnapshot ds = snapshot.docs[0];
-          //   HelperFunctions.saveUserLoggedInSharedPreference(true);
-          //   HelperFunctions.saveUserNameSharedPreference(ds["name"]);
-          //   print(ds["name"]);
-          //   HelperFunctions.saveUserEmailSharedPreference(ds["email"]);
-          // });
 
           HelperFunctions.saveUserLoggedInSharedPreference(true);
 
-          QuerySnapshot userInfoSnapshot = await databaseMethods.getUserInfo(emailEditingController.text);
+          QuerySnapshot userInfoSnapshot =
+              await databaseMethods.getUserInfo(emailEditingController.text);
           DocumentSnapshot ds = userInfoSnapshot.docs[0];
           print(ds["name"]);
           HelperFunctions.saveUserNameSharedPreference(ds["name"]);
-              print("SignIn Helper: ${HelperFunctions.getUserNameSharedPreference()}");
-
+          print(
+              "SignIn Helper: ${HelperFunctions.getUserNameSharedPreference()}");
 
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => ChatRoom()));
@@ -71,12 +63,29 @@ class _SignInState extends State<SignIn> {
     }
   }
 
+  signInWithGoogle() async {
+    authMethods.signInWithGoogle(context);
+
+    // GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount();
+
+//     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+// if (acct != null) {
+//   String personName = acct.getDisplayName();
+//   String personGivenName = acct.getGivenName();
+//   String personFamilyName = acct.getFamilyName();
+//   String personEmail = acct.getEmail();
+//   String personId = acct.getId();
+//   Uri personPhoto = acct.getPhotoUrl();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
       body: isLoading
-          ? Container(child: Center(child: CircularProgressIndicator()),)
+          ? Container(
+              child: Center(child: CircularProgressIndicator()),
+            )
           : SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height - 100,
@@ -87,133 +96,139 @@ class _SignInState extends State<SignIn> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Form(
-                      key: formKey,
-                      child: Column(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              validator: (val) {
+                                return RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(val)
+                                    ? null
+                                    : "Please Enter Correct Email";
+                              },
+                              controller: emailEditingController,
+                              style: simpleTextStyle(),
+                              decoration: textFieldInputDecoration("email"),
+                            ),
+                            TextFormField(
+                              obscureText: true,
+                              validator: (val) {
+                                return val.length > 6
+                                    ? null
+                                    : "Enter Password 6+ characters";
+                              },
+                              style: simpleTextStyle(),
+                              controller: passwordEditingController,
+                              decoration: textFieldInputDecoration("password"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          TextFormField(
-                            validator: (val) {
-                              return RegExp(
-                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      .hasMatch(val)
-                                  ? null
-                                  : "Please Enter Correct Email";
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ForgotPassword()));
                             },
-                            controller: emailEditingController,
-                            style: simpleTextStyle(),
-                            decoration: textFieldInputDecoration("email"),
+                            child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: simpleTextStyle(),
+                                )),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          signIn();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xff007EF4),
+                                  const Color(0xff2A75BC)
+                                ],
+                              )),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "Sign In",
+                            style: mediumTextStyle(),
+                            textAlign: TextAlign.center,
                           ),
-                          TextFormField(
-                            obscureText: true,
-                            validator: (val) {
-                              return val.length > 6
-                                  ? null
-                                  : "Enter Password 6+ characters";
-                            },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          signInWithGoogle();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white),
+                          width: MediaQuery.of(context).size.width,
+                          child: Text(
+                            "Sign In with Google",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 17,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Don't have account? ",
                             style: simpleTextStyle(),
-                            controller: passwordEditingController,
-                            decoration: textFieldInputDecoration("password"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              widget.toggleView();
+                            },
+                            child: Text(
+                              "Register now",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.underline),
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ForgotPassword()));
-                          },
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Text(
-                                "Forgot Password?",
-                                style: simpleTextStyle(),
-                              )),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        signIn();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xff007EF4),
-                                const Color(0xff2A75BC)
-                              ],
-                            )),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "Sign In",
-                          style: mediumTextStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white),
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        "Sign In with Google",
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 17,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have account? ",
-                          style: simpleTextStyle(),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.toggleView();
-                          },
-                          child: Text(
-                            "Register now",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
-                    )
-                  ],
+                      SizedBox(
+                        height: 50,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-    ),);
+    );
   }
 
   // @override
