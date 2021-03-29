@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/helper/helperfunctions.dart';
 import 'package:flutter_chat_app/model/chatuser.dart';
 import 'package:flutter_chat_app/views/chatRoomScreen.dart';
-import 'package:flutter_chat_app/views/conversationScreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthMethods {
@@ -43,7 +42,7 @@ class AuthMethods {
     }
   }
 
-  Future<User> signInWithGoogle(BuildContext context) async {
+  Future signInWithGoogle(BuildContext context) async {
     final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
     final GoogleSignInAccount googleSignInAccount =
@@ -60,7 +59,6 @@ class AuthMethods {
 
     if (user == null) {
     } else {
-      print(user.displayName);
       HelperFunctions.saveUserEmailSharedPreference(user.email);
       HelperFunctions.saveUserNameSharedPreference(user.displayName);
       HelperFunctions.saveUserLoggedInSharedPreference(true);

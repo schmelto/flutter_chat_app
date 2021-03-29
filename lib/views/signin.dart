@@ -6,7 +6,6 @@ import 'package:flutter_chat_app/views/chatRoomScreen.dart';
 import 'package:flutter_chat_app/views/forgotpassword.dart';
 import 'package:flutter_chat_app/widgets/widgets.dart';
 import 'package:flutter_chat_app/helper/helperfunctions.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
