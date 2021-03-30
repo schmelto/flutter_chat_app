@@ -40,7 +40,6 @@ class _SignInState extends State<SignIn> {
               emailEditingController.text, passwordEditingController.text)
           .then((value) async {
         if (value != null) {
-
           HelperFunctions.saveUserLoggedInSharedPreference(true);
 
           QuerySnapshot userInfoSnapshot =
@@ -75,7 +74,7 @@ class _SignInState extends State<SignIn> {
 //   String personEmail = acct.getEmail();
 //   String personId = acct.getId();
 //   Uri personPhoto = acct.getPhotoUrl();
-}
+  }
 
   @override
   Widget build(BuildContext context) {

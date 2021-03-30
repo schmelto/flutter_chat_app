@@ -94,17 +94,18 @@ class ChatRoomsTile extends StatelessWidget {
   final String userName;
   final String chatroomID;
 
-  ChatRoomsTile({this.userName,@required this.chatroomID});
+  ChatRoomsTile({this.userName, @required this.chatroomID});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => Chat(
-            chatRoomId: chatroomID,
-          )
-        ));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(
+                      chatRoomId: chatroomID,
+                    )));
       },
       child: Container(
         color: Colors.black26,

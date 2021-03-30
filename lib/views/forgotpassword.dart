@@ -8,16 +8,14 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-
   TextEditingController emailEditingController = new TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   AuthMethods authMethods = new AuthMethods();
 
-  resetPassword(){
+  resetPassword() {
     authMethods.resetPassword(emailEditingController.text);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,30 +50,30 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ),
                 ),
                 SizedBox(
-                      height: 16,
+                  height: 16,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    resetPassword();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xff007EF4),
+                            const Color(0xff2A75BC)
+                          ],
+                        )),
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "Reset Password",
+                      style: mediumTextStyle(),
+                      textAlign: TextAlign.center,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        resetPassword();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xff007EF4),
-                                const Color(0xff2A75BC)
-                              ],
-                            )),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "Reset Password",
-                          style: mediumTextStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                  ),
+                ),
               ],
             ),
           ),
