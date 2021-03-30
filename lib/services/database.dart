@@ -64,7 +64,7 @@ class DatabaseMethods {
         .add(messageMap);
   }
 
-    getUserChats(String itIsMyName) async {
+  getUserChats(String itIsMyName) async {
     // ignore: await_only_futures
     return await FirebaseFirestore.instance
         .collection("chatRoom")

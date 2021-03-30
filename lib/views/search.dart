@@ -94,7 +94,7 @@ class _SearchScreenState extends State<SearchScreen> {
   sendMessage(String userName) {
     List<String> users = [Constants.myName, userName];
     print(users);
-    print(Constants.myName); 
+    print(Constants.myName);
 
     String chatRoomId = getChatRoomId(Constants.myName, userName);
 
