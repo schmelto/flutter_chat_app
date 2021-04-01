@@ -63,17 +63,6 @@ class _SignInState extends State<SignIn> {
 
   signInWithGoogle() async {
     authMethods.signInWithGoogle(context);
-
-    // GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount();
-
-//     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
-// if (acct != null) {
-//   String personName = acct.getDisplayName();
-//   String personGivenName = acct.getGivenName();
-//   String personFamilyName = acct.getFamilyName();
-//   String personEmail = acct.getEmail();
-//   String personId = acct.getId();
-//   Uri personPhoto = acct.getPhotoUrl();
   }
 
   @override
