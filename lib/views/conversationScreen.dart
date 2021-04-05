@@ -98,10 +98,6 @@ class _ChatState extends State<Chat> {
                             suffixIcon: IconButton(
                                 onPressed: () {
                                   addMessage();
-                                  Timer(
-                                      Duration(milliseconds: 300),
-                                      () => _controller.jumpTo(_controller
-                                          .position.maxScrollExtent));
                                 },
                                 icon: Icon(Icons.send, color: Colors.white))),
                       ),
